@@ -3,33 +3,26 @@ import {
   createQuestionController,
   getQuestionsController,
   getSingleQuestionController,
+  searchQuestionsSemanticController,
+  getSimilarQuestionsController,
 } from "../controller/question.controller.js";
 import {
   createQuestionValidation,
   getQuestionsValidation,
   getSingleQuestionValidation,
+  searchQuestionsValidation,
+  similarQuestionsValidation,
 } from "../validations/question.validation.js";
 import { authenticateUser } from "../../../middleware/authentication.js";
 
 const router = express.Router();
 
-/**
- * @route POST /api/questions
- * @desc Create a new question and generate its vector embedding
- * @access Protected
- */
 router.post(
   "/",
   authenticateUser,
   createQuestionValidation,
   createQuestionController,
 );
-
-/**
- * @route GET /api/questions
- * @desc List questions, optionally filtered by search term or "mine"
- * @access Protected
- */
 router.get(
   "/",
   authenticateUser,
@@ -37,11 +30,22 @@ router.get(
   getQuestionsController,
 );
 
-/**
- * @route GET /api/questions/:questionHash
- * @desc Get a single question with its answers
- * @access Protected
- */
+// IMPORTANT: /search must be registered BEFORE /:questionHash, otherwise Express
+// would match "search" as a questionHash value and this route would never run.
+router.get(
+  "/search",
+  authenticateUser,
+  searchQuestionsValidation,
+  searchQuestionsSemanticController,
+);
+
+router.get(
+  "/:questionHash/similar",
+  authenticateUser,
+  similarQuestionsValidation,
+  getSimilarQuestionsController,
+);
+
 router.get(
   "/:questionHash",
   authenticateUser,

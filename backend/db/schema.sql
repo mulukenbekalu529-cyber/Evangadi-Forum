@@ -141,3 +141,25 @@ https://github.com/Rahel-zekiros/ai-powered-forum-project.git
 
 
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiTXVsdWtlbiIsImxhc3ROYW1lIjoiQmVrYWx1IiwiaWF0IjoxNzg4NjUyNTY1LCJleHAiOjE3ODg3Mzg5NjV9.ejiquf1vjyartIFQi_YwMQfPZYpmVMMU6iKXpaEEgZ8
+
+
+**Task Name**: Register User (`T-04`)
+
+  - **Description**: Implement `POST /api/auth/register` to validate input, hash passwords using bcrypt, and create new user accounts.
+  - **Reference**: `/auth/register.md`
+
+  **Task Name**: Auth Page UI (`T-07`)
+
+  - **Description**: Build the combined Login/Register page at `/auth` utilizing Framer Motion for smooth form transitions.
+  - **Reference**: `/auth/task-auth.md`
+
+  **Task Name**: AI Question Draft Coach (`T-17`)
+
+  - **Description**: Implement `POST /api/questions/draft-coach` to provide real-time AI feedback and tips on question drafts.
+  - **Reference**: `/question/draft-coach.md`
+
+  ### Frontend Tasks
+
+- **Task Name**: Layout Shell (`T-13`)
+
+  - **Description**: Create the `Layout`, `Navbar`, and `Sidebar` components to wrap and navigate between protected routes.

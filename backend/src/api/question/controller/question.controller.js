@@ -3,11 +3,10 @@ import {
   createQuestionWithVectorService,
   getQuestionsService,
   getSingleQuestionService,
+  searchQuestionsSemanticService,
+  getSimilarQuestionsService,
 } from "../service/question.service.js";
 
-/**
- * Handles question creation requests.
- */
 export const createQuestionController = async (req, res, next) => {
   try {
     const { title, content } = req.body;
@@ -29,9 +28,6 @@ export const createQuestionController = async (req, res, next) => {
   }
 };
 
-/**
- * Handles listing questions, with optional search and "mine" filters.
- */
 export const getQuestionsController = async (req, res, next) => {
   try {
     const { search, mine } = req.query;
@@ -50,9 +46,6 @@ export const getQuestionsController = async (req, res, next) => {
   }
 };
 
-/**
- * Handles fetching a single question and its answers.
- */
 export const getSingleQuestionController = async (req, res, next) => {
   try {
     const { questionHash } = req.params;
@@ -65,6 +58,55 @@ export const getSingleQuestionController = async (req, res, next) => {
       question: result.question,
       answers: result.answers,
       answersMeta: result.answersMeta,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Handles free-text semantic search across all questions.
+ */
+export const searchQuestionsSemanticController = async (req, res, next) => {
+  try {
+    const { query: searchQuery, k, threshold } = req.query;
+
+    const result = await searchQuestionsSemanticService({
+      searchQuery,
+      k,
+      threshold,
+    });
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Semantic search completed successfully",
+      data: result.data,
+      meta: result.meta,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Handles finding questions similar to an existing one.
+ */
+export const getSimilarQuestionsController = async (req, res, next) => {
+  try {
+    const { questionHash } = req.params;
+    const { k, threshold } = req.query;
+
+    const result = await getSimilarQuestionsService({
+      questionHash,
+      k,
+      threshold,
+    });
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Similar questions fetched successfully",
+      data: result.data,
+      meta: result.meta,
     });
   } catch (error) {
     next(error);

@@ -42,3 +42,39 @@ export const getSingleQuestionValidation = [
 
   validationErrorHandler,
 ];
+
+// Shared by both semantic search and similar-questions, since k/threshold behave identically.
+const kAndThresholdValidation = [
+  query("k")
+    .optional()
+    .isInt({ min: 1, max: 20 })
+    .withMessage("k must be an integer between 1 and 20")
+    .toInt(),
+  query("threshold")
+    .optional()
+    .isFloat({ min: 0, max: 1 })
+    .withMessage("threshold must be a number between 0 and 1")
+    .toFloat(),
+];
+
+export const searchQuestionsValidation = [
+  query("query")
+    .notEmpty()
+    .withMessage("query is required")
+    .isString()
+    .withMessage("query must be a string")
+    .isLength({ min: 5 })
+    .withMessage("query must be at least 5 characters long"),
+  ...kAndThresholdValidation,
+
+  validationErrorHandler,
+];
+
+export const similarQuestionsValidation = [
+  param("questionHash")
+    .matches(/^[a-f0-9]{16}$/)
+    .withMessage("Invalid question hash format"),
+  ...kAndThresholdValidation,
+
+  validationErrorHandler,
+];
