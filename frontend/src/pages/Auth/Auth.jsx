@@ -102,7 +102,7 @@ export default function Auth() {
         // Redirect to original URL if present, otherwise dashboard
         const from = location.state?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
-        navigate(from, { replace: true });
+        
       } else {
         // Registration flow
         await register({
