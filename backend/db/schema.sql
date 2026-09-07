@@ -133,15 +133,14 @@ CREATE TABLE `document_chunk_vectors` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3ROYW1lIjoiZmlraXIiLCJsYXN0TmFtZSI6InlpaHVuIiwiaWF0IjoxNzg4Nzg4ODc3LCJleHAiOjE3ODg4NzUyNzd9.Ywwq9OC7EoPrJ2Vby-AsoHSrBiAdFtjYTVTK8nU3ds0
 
 
 
 https://github.com/Rahel-zekiros/ai-powered-forum-project.git
 
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiTXVsdWtlbiIsImxhc3ROYW1lIjoiQmVrYWx1IiwiaWF0IjoxNzg4NjUyNTY1LCJleHAiOjE3ODg3Mzg5NjV9.ejiquf1vjyartIFQi_YwMQfPZYpmVMMU6iKXpaEEgZ8
-
+ "token": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiTXVsdWtlbiIsImxhc3ROYW1lIjoiQmVrYWx1IiwiaWF0IjoxNzg4NjUyMzYzLCJleHAiOjE3ODg3Mzg3NjN9.PuWPU0xHWcBXAdyZHgGpoUWcqh08iN-KtJ2Z1cefj7I
 
 **Task Name**: Register User (`T-04`)
 

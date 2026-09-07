@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   createQuestionController,
   getQuestionsController,
@@ -6,6 +7,7 @@ import {
   searchQuestionsSemanticController,
   getSimilarQuestionsController,
 } from "../controller/question.controller.js";
+
 import {
   createQuestionValidation,
   getQuestionsValidation,
@@ -13,9 +15,18 @@ import {
   searchQuestionsValidation,
   similarQuestionsValidation,
 } from "../validations/question.validation.js";
+
 import { authenticateUser } from "../../../middleware/authentication.js";
 
 const router = express.Router();
+
+/*
+==================================================
+T-09
+CREATE QUESTION
+POST /api/questions
+==================================================
+*/
 
 router.post(
   "/",
@@ -23,6 +34,15 @@ router.post(
   createQuestionValidation,
   createQuestionController,
 );
+
+/*
+==================================================
+T-10
+LIST QUESTIONS
+GET /api/questions
+==================================================
+*/
+
 router.get(
   "/",
   authenticateUser,
@@ -30,8 +50,15 @@ router.get(
   getQuestionsController,
 );
 
-// IMPORTANT: /search must be registered BEFORE /:questionHash, otherwise Express
-// would match "search" as a questionHash value and this route would never run.
+/*
+==================================================
+T-11
+SEMANTIC SEARCH
+IMPORTANT:
+This must come before /:questionHash
+==================================================
+*/
+
 router.get(
   "/search",
   authenticateUser,
@@ -39,12 +66,28 @@ router.get(
   searchQuestionsSemanticController,
 );
 
+/*
+==================================================
+T-11
+SIMILAR QUESTIONS
+GET /api/questions/:questionHash/similar
+==================================================
+*/
+
 router.get(
   "/:questionHash/similar",
   authenticateUser,
   similarQuestionsValidation,
   getSimilarQuestionsController,
 );
+
+/*
+==================================================
+T-10
+SINGLE QUESTION
+GET /api/questions/:questionHash
+==================================================
+*/
 
 router.get(
   "/:questionHash",

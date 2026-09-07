@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 const apiKey = process.env.GEMINI_API_KEY;
+
 const EMBEDDING_MODEL =
   process.env.GEMINI_EMBEDDING_MODEL || "gemini-embedding-001";
 
@@ -11,11 +12,11 @@ if (!apiKey) {
 const ai = new GoogleGenAI({ apiKey });
 
 /**
- * Generates a vector embedding for a piece of text using Gemini.
+ * Generate an embedding vector for text.
  *
- * @param {string} text - The text to embed.
- * @param {'RETRIEVAL_DOCUMENT'|'RETRIEVAL_QUERY'} taskType - How the embedding will be used.
- * @returns {Promise<number[]>} The embedding vector.
+ * @param {string} text
+ * @param {"RETRIEVAL_DOCUMENT"|"RETRIEVAL_QUERY"} taskType
+ * @returns {Promise<number[]>}
  */
 export const generateEmbedding = async (
   text,
@@ -24,7 +25,9 @@ export const generateEmbedding = async (
   const result = await ai.models.embedContent({
     model: EMBEDDING_MODEL,
     contents: text,
-    config: { taskType },
+    config: {
+      taskType,
+    },
   });
 
   return result.embeddings[0].values;
