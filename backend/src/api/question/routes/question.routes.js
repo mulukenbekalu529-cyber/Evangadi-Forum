@@ -6,6 +6,8 @@ import {
   getSingleQuestionController,
   searchQuestionsSemanticController,
   getSimilarQuestionsController,
+  generateQuestionDraftCoachController,
+  assessAnswerAgainstQuestionController,
 } from "../controller/question.controller.js";
 
 import {
@@ -14,6 +16,8 @@ import {
   getSingleQuestionValidation,
   searchQuestionsValidation,
   similarQuestionsValidation,
+  generateQuestionDraftCoachValidation,
+  assessAnswerAgainstQuestionValidation,
 } from "../validations/question.validation.js";
 
 import { authenticateUser } from "../../../middleware/authentication.js";
@@ -52,10 +56,27 @@ router.get(
 
 /*
 ==================================================
+T-17
+AI QUESTION DRAFT COACH
+POST /api/questions/draft-coach
+==================================================
+
+IMPORTANT:
+This route must be BEFORE /:questionHash
+*/
+
+router.post(
+  "/draft-coach",
+  authenticateUser,
+  generateQuestionDraftCoachValidation,
+  generateQuestionDraftCoachController,
+);
+
+/*
+==================================================
 T-11
 SEMANTIC SEARCH
-IMPORTANT:
-This must come before /:questionHash
+GET /api/questions/search
 ==================================================
 */
 
@@ -64,6 +85,21 @@ router.get(
   authenticateUser,
   searchQuestionsValidation,
   searchQuestionsSemanticController,
+);
+
+/*
+==================================================
+T-18
+AI ANSWER FIT
+POST /api/questions/:questionHash/answer-fit
+==================================================
+*/
+
+router.post(
+  "/:questionHash/answer-fit",
+  authenticateUser,
+  assessAnswerAgainstQuestionValidation,
+  assessAnswerAgainstQuestionController,
 );
 
 /*

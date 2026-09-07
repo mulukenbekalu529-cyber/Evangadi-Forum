@@ -102,7 +102,8 @@ export const searchQuestionsValidation = [
     .isString()
     .withMessage("query must be a string")
     .isLength({ min: 5 })
-    .withMessage("query must be at least 5 characters long"),
+    .withMessage("query must be at least 5 characters long")
+    .trim(),
 
   ...kAndThresholdValidation,
 
@@ -122,6 +123,56 @@ export const similarQuestionsValidation = [
     .withMessage("Invalid question hash format"),
 
   ...kAndThresholdValidation,
+
+  validationErrorHandler,
+];
+
+/*
+==================================================
+T-17
+AI QUESTION DRAFT COACH VALIDATION
+==================================================
+*/
+
+export const generateQuestionDraftCoachValidation = [
+  body("title")
+    .optional()
+    .isString()
+    .withMessage("Title must be a string")
+    .trim(),
+
+  body("content")
+    .notEmpty()
+    .withMessage("Content is required")
+    .isString()
+    .withMessage("Content must be a string")
+    .isLength({ min: 10 })
+    .withMessage("Content must be at least 10 characters long")
+    .trim(),
+
+  validationErrorHandler,
+];
+
+/*
+==================================================
+T-18
+AI ANSWER FIT VALIDATION
+==================================================
+*/
+
+export const assessAnswerAgainstQuestionValidation = [
+  param("questionHash")
+    .matches(/^[a-f0-9]{16}$/)
+    .withMessage("Invalid question hash format"),
+
+  body("answerText")
+    .notEmpty()
+    .withMessage("Answer text is required")
+    .isString()
+    .withMessage("Answer text must be a string")
+    .isLength({ min: 20 })
+    .withMessage("Answer text must be at least 20 characters long")
+    .trim(),
 
   validationErrorHandler,
 ];

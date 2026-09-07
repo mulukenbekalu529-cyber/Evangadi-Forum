@@ -8,7 +8,18 @@ import {
   getSimilarQuestionsService,
 } from "../service/question.service.js";
 
-// T-09 Create Question
+import {
+  generateQuestionDraftCoachService,
+  assessAnswerAgainstQuestionService,
+} from "../service/geminiTextCoach.service.js";
+
+/*
+==================================================
+T-09
+CREATE QUESTION
+==================================================
+*/
+
 export const createQuestionController = async (req, res, next) => {
   try {
     const { title, content } = req.body;
@@ -31,7 +42,13 @@ export const createQuestionController = async (req, res, next) => {
   }
 };
 
-// T-10 List Questions
+/*
+==================================================
+T-10
+LIST QUESTIONS
+==================================================
+*/
+
 export const getQuestionsController = async (req, res, next) => {
   try {
     const { search, mine } = req.query;
@@ -55,12 +72,20 @@ export const getQuestionsController = async (req, res, next) => {
   }
 };
 
-// T-10 Single Question
+/*
+==================================================
+T-10
+GET SINGLE QUESTION
+==================================================
+*/
+
 export const getSingleQuestionController = async (req, res, next) => {
   try {
     const { questionHash } = req.params;
 
-    const result = await getSingleQuestionService(questionHash);
+    const result = await getSingleQuestionService({
+      questionHash,
+    });
 
     res.status(StatusCodes.OK).json({
       success: true,
@@ -74,62 +99,112 @@ export const getSingleQuestionController = async (req, res, next) => {
   }
 };
 
-// T-11 Semantic Search
+/*
+==================================================
+T-11
+SEMANTIC SEARCH
+==================================================
+*/
+
 export const searchQuestionsSemanticController = async (req, res, next) => {
   try {
-    const { query, k, threshold } = req.query;
+    const { query: searchQuery, k, threshold } = req.query;
 
-    const data = await searchQuestionsSemanticService({
-      query,
-      k: k ? Number(k) : undefined,
-      threshold: threshold ? Number(threshold) : undefined,
+    const result = await searchQuestionsSemanticService({
+      searchQuery,
+      k,
+      threshold,
     });
 
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Semantic search completed successfully",
-
-      data,
-
-      meta: {
-        total: data.length,
-        k: k ? Number(k) : 5,
-        threshold: threshold ? Number(threshold) : 0.75,
-        query,
-        questionHash: null,
-      },
+      data: result.data,
+      meta: result.meta,
     });
   } catch (error) {
     next(error);
   }
 };
 
-// T-11 Similar Questions
+/*
+==================================================
+T-11
+SIMILAR QUESTIONS
+==================================================
+*/
+
 export const getSimilarQuestionsController = async (req, res, next) => {
   try {
     const { questionHash } = req.params;
 
     const { k, threshold } = req.query;
 
-    const data = await getSimilarQuestionsService({
+    const result = await getSimilarQuestionsService({
       questionHash,
-      k: k ? Number(k) : undefined,
-      threshold: threshold ? Number(threshold) : undefined,
+      k,
+      threshold,
     });
 
     res.status(StatusCodes.OK).json({
       success: true,
       message: "Similar questions fetched successfully",
+      data: result.data,
+      meta: result.meta,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-      data,
+/*
+==================================================
+T-17
+AI QUESTION DRAFT COACH
+==================================================
+*/
 
-      meta: {
-        total: data.length,
-        k: k ? Number(k) : 5,
-        threshold: threshold ? Number(threshold) : 0.75,
-        query: null,
-        questionHash,
-      },
+export const generateQuestionDraftCoachController = async (req, res, next) => {
+  try {
+    const { title, content } = req.body;
+
+    const result = await generateQuestionDraftCoachService({
+      title,
+      content,
+    });
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Draft suggestions generated",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/*
+==================================================
+T-18
+AI ANSWER FIT
+==================================================
+*/
+
+export const assessAnswerAgainstQuestionController = async (req, res, next) => {
+  try {
+    const { questionHash } = req.params;
+
+    const { answerText } = req.body;
+
+    const result = await assessAnswerAgainstQuestionService({
+      questionHash,
+      answerText,
+    });
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: "Answer fit assessed",
+      data: result,
     });
   } catch (error) {
     next(error);
