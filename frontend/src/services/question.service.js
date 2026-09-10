@@ -16,7 +16,7 @@ export const searchQuestionsSemantic = async (params = {}) => {
   return response.data;
 };
 
-// T-15: Create Question
+// T-09: Create Question
 
 export const createQuestion = async ({ title, content }) => {
   const response = await apiClient.post("/api/questions", {
@@ -27,7 +27,7 @@ export const createQuestion = async ({ title, content }) => {
   return response.data;
 };
 
-// T-15: AI Question Draft Coach
+// T-17: AI Question Draft Coach
 export const generateQuestionDraftCoach = async ({ title, content }) => {
   const response = await apiClient.post("/api/questions/draft-coach", {
     title,
